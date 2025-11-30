@@ -1,0 +1,167 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Simple, modern dashboard page
+     - Uses Bootstrap grid and cards
+     - Chart placeholders included (add Chart.js if you want real charts)
+     - Clear comments so new devs understand structure
+-->
+
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fw-bold mb-0">Dashboard</h2>
+            <div class="text-muted small">Overview of site stats and recent activity</div>
+        </div>
+        <div>
+            <!-- Quick actions -->
+            <a href="#" class="btn btn-outline-primary btn-sm">New Project</a>
+            <a href="#" class="btn btn-primary btn-sm ms-2">Add Skill</a>
+        </div>
+    </div>
+
+    <!-- Stats cards -->
+    <div class="row g-3">
+        <div class="col-sm-6 col-md-3">
+            <div class="card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-muted small">Total Users</div>
+                        <div class="h4 fw-bold">1,234</div>
+                    </div>
+                    <div class="text-primary" style="font-size:22px">👥</div>
+                </div>
+                <div class="text-success small mt-2">+8% since last week</div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-muted small">Active Skills</div>
+                        <div class="h4 fw-bold">42</div>
+                    </div>
+                    <div style="font-size:22px">🛠️</div>
+                </div>
+                <div class="text-muted small mt-2">Most used: JavaScript</div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-muted small">Projects</div>
+                        <div class="h4 fw-bold">18</div>
+                    </div>
+                    <div style="font-size:22px">📁</div>
+                </div>
+                <div class="text-warning small mt-2">3 overdue</div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="text-muted small">Server Load</div>
+                        <div class="h4 fw-bold">0.62</div>
+                    </div>
+                    <div style="font-size:22px">⚙️</div>
+                </div>
+                <div class="text-muted small mt-2">Stable</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts / Graphs row -->
+    <div class="row mt-4 g-3">
+        <div class="col-lg-8">
+            <div class="card p-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">Traffic (last 30 days)</h5>
+                    <div class="text-muted small">Visitors & pageviews</div>
+                </div>
+                <!-- Placeholder for a chart. To show a real chart, include Chart.js and use the canvas id below -->
+                <div style="min-height:200px; display:flex; align-items:center; justify-content:center; color:#6b7280;">
+                    <canvas id="trafficChart" width="600" height="220"> <!-- Add Chart.js to render here --> </canvas>
+                    <div class="small text-center d-block d-lg-none">Add Chart.js to render graphs here (mobile placeholder)</div>
+                </div>
+                <div class="text-muted small mt-2">Tip: include Chart.js via CDN or static files to render dynamic charts.</div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card p-3 mb-3">
+                <h6 class="mb-2">Recent Activity</h6>
+                <ul class="list-unstyled">
+                    <li class="py-2 border-bottom small"><strong>Ali</strong> added skill <em>React</em> — 2h ago</li>
+                    <li class="py-2 border-bottom small"><strong>Sara</strong> updated project <em>Portfolio</em> — 6h ago</li>
+                    <li class="py-2 border-bottom small"><strong>System</strong> backup completed — 1d ago</li>
+                </ul>
+                <a href="#" class="small">View all activity</a>
+            </div>
+
+            <div class="card p-3">
+                <h6 class="mb-2">Quick Stats</h6>
+                <div class="small text-muted">Uptime</div>
+                <div class="progress mb-2" style="height:8px">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 99%"></div>
+                </div>
+                <div class="small text-muted">Disk usage</div>
+                <div class="progress mb-2" style="height:8px">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 62%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table: recent items -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card p-3">
+                <h5 class="mb-3">Recent Skills</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Skill</th>
+                                <th>Logo URL</th>
+                                <th>Added</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for skill in skills %}
+                            <tr>
+                                <td>{{ skill.id }}</td>
+                                <td>{{ skill.skill_name }}</td>
+                                <td class="text-truncate" style="max-width:250px">{{ skill.logo_url }}</td>
+                                <td class="text-muted small">{{ skill.created_at|default:"-" }}</td>
+                                <td><a href="#" class="btn btn-sm btn-outline-secondary">Details</a></td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5" class="text-muted">No skills yet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Notes for implementers:
+    - If you want charts, add Chart.js in your static files or CDN and initialize a chart on #trafficChart.
+    - The template expects `skills` in context (same as skill_control view).
+    - Keep markup simple; styling uses Bootstrap utilities so a new dev can edit easily.
+-->
+
+{% endblock %}

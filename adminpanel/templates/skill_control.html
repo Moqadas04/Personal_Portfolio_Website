@@ -1,0 +1,59 @@
+
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Hero Section{% endblock %}
+{% block content %}
+    <h2 class="fw-bold mb-4" style="color: orange;">Skill Control Section</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- Hidden field for edit id -->
+        <input type="hidden" name="skill_id" id="skill_id" value="">
+        <!-- Hidden action indicator: 'create' or 'update' -->
+        <input type="hidden" name="action" id="form_action" value="create">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <label for="skill_name">Skill Name</label>
+                <input type="text" name="skill_name" id="skill_name" class="form-control" value="" required>
+                <label for="skill_logo">Logo URL</label>
+                <input type="text" name="logo_url" id="skill_logo" class="form-control" value="" required>
+                <div class="text-center">
+                    <input id="submit" type="submit" value="Add New Skill Or Tools" class="btn btn-primary submit-btn m-3">
+                    <button type="button" id="cancel_edit" class="btn btn-secondary m-2" style="display:none;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+        <h2 class="fw-bold mb-4 mt-5" style="color: orange;">Existing Skills</h2>
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Skill Name</th>
+            <th>Logo URL</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for skill in skills %}
+        <tr data-id="{{ skill.id }}" data-name="{{ skill.skill_name|escape }}" data-logo="{{ skill.logo_url|escape }}">
+            <th scope="row">{{ skill.id }}</th>
+            <td>{{ skill.skill_name }}</td>
+            <td>{{ skill.logo_url }}</td>
+            <td>
+                <!-- Delete button -->
+                <form action="{% url 'delete_skill' skill.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                
+                <!-- Edit button -->
+                <!-- Use data attributes and a class for JS handling instead of inline onclick -->
+                <button type="button" class="btn btn-warning btn-sm btn-edit-skill" data-id="{{ skill.id }}" data-name="{{ skill.skill_name|escape }}" data-logo="{{ skill.logo_url|escape }}">Edit</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script src="{% static 'js/skill_control.js' %}"></script>
+       {% endblock%}

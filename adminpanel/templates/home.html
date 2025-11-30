@@ -1,0 +1,44 @@
+    {% extends 'layout.html' %}
+    {% block title%}Hero Section{% endblock %}
+    {% block content%}
+    {% load static %}
+            <h2 class="fw-bold mb-4" style="color: orange;">Hero Section Control</h2>
+            <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img src="{{ hero.profile_image.url }}" class="profile-preview mb-3" id="previewImage">
+                    <input type="file" name="photo" class="form-control" onchange="previewPhoto(event)">
+                </div>
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Full Name:</label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter your name..." value={{ hero.name }}>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Your Title:</label>
+                        <input type="text" name="title" class="form-control" placeholder="Web Developer / Full-Stack Developer ..." value="{{ hero.title }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Hero Description:</label>
+                        <textarea name="description" class="form-control" rows="4" placeholder="Write short about yourself...">{{hero.description}}</textarea>
+                    </div>
+
+                    <button class="btn btn-primary submit-btn">Save Changes</button>
+                </div>
+            </div>
+        </form>
+
+
+
+
+    <script>
+        function previewPhoto(event) {
+            const output = document.getElementById('previewImage');
+            output.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+    {% endblock %}
+    
